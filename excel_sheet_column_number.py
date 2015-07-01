@@ -5,10 +5,11 @@ class Solution:
     # @return {integer}
     def titleToNumber(self, s):
         count = 0
+        factor = 1
         for i, c in enumerate(s[::-1]):
             x = ord(c) - ord('A') + 1
-            factor = 26 ** i
-            x = x * factor
+            x *= factor
+            factor *= 26
             count += x
         return count
 
