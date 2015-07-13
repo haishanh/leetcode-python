@@ -1,8 +1,13 @@
 #!/usr/bin/env python
 from __future__ import print_function
-#TODO TODO!!
 
-class Solution:
+# Solution1 time exceeded
+# Solution2 found on leetcode \
+# (https://leetcode.com/discuss/33660/44ms-python-solution-with-dp), by Ravikanth
+# Solution3 is my passsed solution using dynamic programming, which is easy to
+# understood for me
+
+class Solution1:
     # @param s, a string
     # @param wordDict, a set<string>
     # @return a boolean
@@ -56,12 +61,30 @@ class Solution2:
             else:
                 return False
 
+class Solution3:
+    def wordBreak(self, s, wordDict):
+        length = len(s)
+        if length == 0:
+            return False
+        ## Dynamic programming
+        ## let f[i] ==> s[:i] can be word break or not
+        ## then: if j < i: f[i] = f[j] and s[j:i] in wordDict
+        f = [ False for i in range(length+1) ]
+        f[0] = True
+        for i in range(1, length+1):
+            j = i - 1
+            while j >= 0:
+                if f[j] and s[j:i] in wordDict:
+                    f[i] = True
+                j -= 1
+        return f[length]
+
 def prt_dbg(fmt):
     fmt = ' - Debug: ' + fmt
     print(fmt)
 
 def test():
-    s = Solution2()
+    s = Solution3()
     _str = "leetcode"
     _set = set(['leet', 'co', 'de', 'leetc', 'leetcod'])
     print(_str, _set)
@@ -83,23 +106,23 @@ def test():
     #_set = set(['lee', 'tco', 'd'])
     #assert False == s.wordBreak(_str, _set)
     #print('-' * 10)
-    #_str = "thisisaverylongword"
-    #_set = set(['th', 'is', 'a', 've', 'ry', 'longw', 'ord'])
-    #assert True == s.wordBreak(_str, _set)
-    #print('-' * 10)
+    _str = "thisisaverylongword"
+    _set = set(['th', 'is', 'a', 've', 'ry', 'longw', 'ord'])
+    assert True == s.wordBreak(_str, _set)
+    print('-' * 10)
     #_str = "thisisaverylongword"
     #_set = set(['th', 'is', 'a', 've', 'ry', 'longw', 'or'])
     #assert False == s.wordBreak(_str, _set)
     #print('-' * 10)
-    #_str = "thisisaverylongword"
-    #_set = set(['th', 'is', 'a', 've', 'ry', 'longw', 'or', 'thi', 's', 'ave', 'longwo', 'rd'])
-    #assert True == s.wordBreak(_str, _set)
-    #print('-' * 10)
-    #_str = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
-    #        aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab"
-    #_set = set(['a', 'aa', 'aaa', 'aaa', 'aaaa', 'aaaaa', 'aaaaa', 'aaaaa', 'aaaaaa', 'aaaaaaa', \
-    #            'aaaaaaaa', 'aaaaaaaaa', 'aaaaaaaaaa'])
-    #assert False == s.wordBreak(_str, _set)
+    _str = "thisisaverylongword"
+    _set = set(['th', 'is', 'a', 've', 'ry', 'longw', 'or', 'thi', 's', 'ave', 'longwo', 'rd'])
+    assert True == s.wordBreak(_str, _set)
+    print('-' * 10)
+    _str = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
+            aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab"
+    _set = set(['a', 'aa', 'aaa', 'aaa', 'aaaa', 'aaaaa', 'aaaaa', 'aaaaa', 'aaaaaa', 'aaaaaaa', \
+                'aaaaaaaa', 'aaaaaaaaa', 'aaaaaaaaaa'])
+    assert False == s.wordBreak(_str, _set)
 
 
 if __name__ == '__main__':
